@@ -9,6 +9,7 @@ export const Navbar = () => {
 		if (localStorage.getItem('token') !== null) {
 			localStorage.clear();
 
+			navigator("/");
 			navigator(0);
 		}
 	};

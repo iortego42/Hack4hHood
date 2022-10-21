@@ -12,8 +12,10 @@ export const CreateOffer = () => {
 
 	let [loading, setLoading] = useState(true);
 
-	// TODO: API CAMBIAR TAG tags.map();
-	let [tag, setTag] = useState(null);
+	let [name, setName] = useState(null);
+	let [lastName, setLastName] = useState(null);
+	let [phone, setPhone] = useState(null);
+	let [email, setEmail] = useState(null);
 
 	useEffect(() => {
 		const getData = async () => {
@@ -26,10 +28,15 @@ export const CreateOffer = () => {
 
 			let data = await response.json();
 
-			if (response.status === 401) {
+			if (response.status === 401 || response.status === 403) {
 				navigator("/login");
 				return;
 			}
+
+			setName(data["name"]);
+			setLastName(data["last_name"]);
+			setPhone(data["phone"]);
+			setEmail(data["email"]);
 
 			setLoading(false);
 		};
@@ -85,9 +92,9 @@ export const CreateOffer = () => {
 					{!loading && <h4 className='text-md font-medium'>Proveedor</h4>}
 					{!loading && 
 						<div className='ml-2'>
-							<p>Adrian Nicusor Pavel</p>
-							<p>+34 648 888 138</p>
-							<a href='mailto:bidijoe45@gmail.com'>bidijoe45@gmail.com</a>
+							<p>{name} {lastName}</p>
+							<p>{phone}</p>
+							<a href={`mailto:${email}`}>{email}</a>
 						</div>
 					}
 				</div>
