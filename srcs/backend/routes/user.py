@@ -11,7 +11,25 @@ class User:
 
 	# GET /user/
 	def get_all_users(self):
-		return "Hola"
+		with Session(self.engine) as session:
+			statement = select(UserModel.id, UserModel.name, UserModel.last_name, UserModel.email, UserModel.phone, UserModel.creation_date)
+			result = session.execute(statement)
+			if result == None:
+				return jsonify({"error": "None users exists"}), 403
+			users = []
+			for r in result:
+				print(r)
+				row = {
+					"id": r.id,
+					"name": r.name,
+					"last_name": r.last_name,
+					"email": r.email,
+					"phone": r.phone,
+					"creation_date": r.creation_date
+				}
+				users.append(row)
+
+			return jsonify(users), 200
 
 	# GET /user/<id>
 	def get_user(self, id):
