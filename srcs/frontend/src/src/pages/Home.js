@@ -20,7 +20,7 @@ export const Home = () => {
 					</ul>
 				</div>
 				<SearchBar />
-				<Link className="btn btn-primary ml-2 text-md" to={"/offer/create"}>Crear oferta</Link>
+				{ localStorage.getItem('token') !== null && <Link className="btn btn-primary ml-2 text-md" to={"/offer/create"}>Crear oferta</Link>}
 			</div>
 			<div className='mt-4'>
 				{array.map((e) => {

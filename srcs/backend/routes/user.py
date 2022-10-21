@@ -3,7 +3,7 @@ from flask import jsonify
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from models import UserModel
-import json
+from middlewares import auth_check
 
 class User:
 	def __init__(self, engine):
@@ -50,6 +50,10 @@ class User:
 
 	# POST /user/
 	def create_user(self):
+		auth_user = auth_check()
+		if auth_user == None:
+			return jsonify({}), 401
+
 		data = request.json
 		user_obj = UserModel(
 			name = data["name"],
@@ -62,13 +66,13 @@ class User:
 		with Session(self.engine) as session:
 			statement = select(UserModel.id, UserModel.email).where(UserModel.email == data["email"])
 			rows = session.execute(statement).fetchone()
-
 			if rows != None:
 				return jsonify({"error": "Email already exists."}), 403
-
 			session.add(user_obj)
 			session.commit()
 			return jsonify({}), 200
+
+		return jsonify({}), 403
 
 	# PATCH /user/<id>
 	def update_user(self, id):
