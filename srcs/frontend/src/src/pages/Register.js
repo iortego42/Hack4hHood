@@ -72,7 +72,7 @@ export const Register = () => {
 			<label className="label">
 				<span className="label-text">Número de teléfono</span>
 			</label>
-			<input value={phone} onChange={(e) => setPhone(e.target.value)} type="text" required placeholder="" className="input input-bordered" />
+			<input value={phone} maxLength={16} onChange={(e) => setPhone(e.target.value)} type="text" required placeholder="" className="input input-bordered" />
 			<label className="label">
 				<span className="label-text">Contraseña</span>
 			</label>
