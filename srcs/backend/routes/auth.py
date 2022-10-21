@@ -14,11 +14,10 @@ class Auth:
 		data = request.json
 
 		with Session(self.engine) as session:
-			statement = select(UserModel.id, UserModel.email).where(UserModel.email == data["email"], UserModel.password == data["password"])
-			rows = session.execute(statement).fetchone()
-
-			if rows == None:
+			statement = select(UserModel.id).where(UserModel.email == data["email"], UserModel.password == data["password"])
+			row = session.execute(statement).fetchone()
+			if row == None:
 				return jsonify({}), 403
-
-			token = jwt.encode({"some": "payload"}, "secret", algorithm="HS256")
+			row = dict(row)
+			token = jwt.encode(row, "secret", algorithm="HS256")
 			return jsonify({"token": token}), 200
