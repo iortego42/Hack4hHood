@@ -4,7 +4,7 @@ import { CiLocationOn } from 'react-icons/ci';
 
 export const Offer = () => {
 	return (
-		<div className="card bg-white shadow-md">
+		<div className="card bg-base-100 shadow-md">
 			<div className="card-body">
 				<div className='inline-flex items-center justify-between'>
 					<h2 className="card-title text-2xl">Camarero</h2>
