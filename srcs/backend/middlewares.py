@@ -6,13 +6,11 @@ def auth_check():
 	auth_header = request.headers.get("Authorization")
 
 	if auth_header == None:
-		return False
-
-	print(auth_header)
+		return None
 
 	try:
 		decoded_token = jwt.decode(auth_header, "secret", algorithms="HS256")
 	except:
-		return False
+		return None
 
-	return True
+	return decoded_token

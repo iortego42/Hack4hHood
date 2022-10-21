@@ -19,8 +19,10 @@ class User:
 
 	# POST /user/
 	def create_user(self):
-		if auth_check() == False:
+		auth_user = auth_check()
+		if auth_user == None:
 			return jsonify({}), 401
+
 		data = request.json
 		user_obj = UserModel(
 			name = data["name"],
