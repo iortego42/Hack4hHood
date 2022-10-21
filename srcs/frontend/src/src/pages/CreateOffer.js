@@ -1,14 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { CiLocationOn } from 'react-icons/ci';
 
 export const CreateOffer = () => {
+	let navigator = useNavigate();
+
 	let [title, setTitle] = useState("Escribe un título");
 	let [location, setLocation] = useState("Escribe una localicación");
 	let [description, setDescription] = useState("Escribe una descripción");
 
+	let [loading, setLoading] = useState(true);
+
 	// TODO: API CAMBIAR TAG tags.map();
 	let [tag, setTag] = useState(null);
+
+	useEffect(() => {
+		const getData = async () => {
+			let response = await fetch(`http://10.13.1.4:3000/user/${JSON.parse(localStorage.getItem('user'))["id"]}`, {
+				method: 'GET',
+				headers: {
+					'Authorization': localStorage.getItem('token')
+				},
+			});
+
+			let data = await response.json();
+
+			if (response.status === 401) {
+				navigator("/login");
+				return;
+			}
+
+			setLoading(false);
+		};
+
+		getData();
+	}, []);
 
 	return (
 		<div className="w-3/4 m-auto">
@@ -55,12 +82,14 @@ export const CreateOffer = () => {
 					<h3 className="text-gray-500 text-sm inline-flex items-center"><CiLocationOn className='mr-1'/>{location}</h3>
 					<p>{description}</p>
 					<hr className='my-2'></hr>
-					<h4 className='text-md font-medium'>Proveedor</h4>
-					<div className='ml-2'>
-						<p>Adrian Nicusor Pavel</p>
-						<p>+34 648 888 138</p>
-						<a href='mailto:bidijoe45@gmail.com'>bidijoe45@gmail.com</a>
-					</div>
+					{!loading && <h4 className='text-md font-medium'>Proveedor</h4>}
+					{!loading && 
+						<div className='ml-2'>
+							<p>Adrian Nicusor Pavel</p>
+							<p>+34 648 888 138</p>
+							<a href='mailto:bidijoe45@gmail.com'>bidijoe45@gmail.com</a>
+						</div>
+					}
 				</div>
 			</div>
 		</div>
