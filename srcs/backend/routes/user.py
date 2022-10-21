@@ -62,7 +62,7 @@ class User:
 		if auth_user == None:
 			return jsonify({}), 401
 
-		if (auth_user["id"] != id)
+		if (int(auth_user["id"]) != int(id)):
 			return jsonify({}), 401
 
 		data = request.json
@@ -75,8 +75,9 @@ class User:
 				phone=data["phone"]
 			)
 			rows = session.execute(statement)
-			if (rows == None)
+			if (rows == None):
 				return jsonify({"Errror": "Could not update user"}), 403
 			session.commit()
+			return jsonify({}), 200
 
-		return jsonify({"Errror": "Could not update user"}), 200
+		return jsonify({"Errror": "Could not update user"}), 403
