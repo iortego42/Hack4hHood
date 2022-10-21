@@ -1,7 +1,7 @@
-from flask import request
-from flask import jsonify
+from flask import request, jsonify
 from sqlalchemy.orm import Session
-from sqlalchemy import select
+from sqlalchemy import select, update
+
 from models import UserModel
 from middlewares import auth_check
 
@@ -58,4 +58,25 @@ class User:
 
 	# PATCH /user/<id>
 	def update_user(self, id):
-		return "Updated"
+		auth_user = auth_check()
+		if auth_user == None:
+			return jsonify({}), 401
+
+		if (auth_user["id"] != id)
+			return jsonify({}), 401
+
+		data = request.json
+
+		with Session(self.engine) as session:
+			statement = update(UserModel).where(UserModel.id == id).values(
+				name=data["name"],
+				last_name=data["last_name"],
+				email=data["email"],
+				phone=data["phone"]
+			)
+			rows = session.execute(statement)
+			if (rows == None)
+				return jsonify({"Errror": "Could not update user"}), 403
+			session.commit()
+
+		return jsonify({"Errror": "Could not update user"}), 200
