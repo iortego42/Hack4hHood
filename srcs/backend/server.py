@@ -25,17 +25,17 @@ class Server:
 		self.define_auth_routes()
 
 	def define_auth_routes(self):
-		self.app.add_url_rule("/auth/", view_func=self.auth_routes.auth, methods=["POST"])
+		self.app.add_url_rule("/auth", view_func=self.auth_routes.auth, methods=["POST"])
 
 	def define_user_routes(self):
-		self.app.add_url_rule("/user/", view_func=self.user_routes.get_all_users, methods=["GET"])
-		self.app.add_url_rule("/user/", view_func=self.user_routes.create_user, methods=["POST"])
+		self.app.add_url_rule("/user", view_func=self.user_routes.get_all_users, methods=["GET"])
+		self.app.add_url_rule("/user", view_func=self.user_routes.create_user, methods=["POST"])
 		self.app.add_url_rule("/user/<id>", view_func=self.user_routes.get_user, methods=["GET"])
 		self.app.add_url_rule("/user/<id>", view_func=self.user_routes.update_user, methods=["PATCH"])
 
 	def define_offer_routes(self):
-		self.app.add_url_rule("/offer/", view_func=self.offer_routes.get_all_offers, methods=["GET"])
-		self.app.add_url_rule("/offer/", view_func=self.offer_routes.create_offer, methods=["POST"])
+		self.app.add_url_rule("/offer", view_func=self.offer_routes.get_all_offers, methods=["GET"])
+		self.app.add_url_rule("/offer", view_func=self.offer_routes.create_offer, methods=["POST"])
 		self.app.add_url_rule("/offer/<id>", view_func=self.offer_routes.get_offer, methods=["GET"])
 		self.app.add_url_rule("/offer/<id>", view_func=self.offer_routes.update_offer, methods=["PATCH"])
 
