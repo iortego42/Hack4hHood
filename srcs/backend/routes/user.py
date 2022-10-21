@@ -1,7 +1,7 @@
-from flask import request
-from flask import jsonify
+from flask import request, jsonify
 from sqlalchemy.orm import Session
-from sqlalchemy import select
+from sqlalchemy import select, update
+
 from models import UserModel
 from middlewares import auth_check
 
@@ -11,7 +11,25 @@ class User:
 
 	# GET /user/
 	def get_all_users(self):
-		return "Hola"
+		with Session(self.engine) as session:
+			statement = select(UserModel.id, UserModel.name, UserModel.last_name, UserModel.email, UserModel.phone, UserModel.creation_date)
+			result = session.execute(statement)
+			if result == None:
+				return jsonify({"error": "None users exists"}), 403
+			users = []
+			for r in result:
+				print(r)
+				row = {
+					"id": r.id,
+					"name": r.name,
+					"last_name": r.last_name,
+					"email": r.email,
+					"phone": r.phone,
+					"creation_date": r.creation_date
+				}
+				users.append(row)
+
+			return jsonify(users), 200
 
 	# GET /user/<id>
 	def get_user(self, id):
@@ -58,4 +76,30 @@ class User:
 
 	# PATCH /user/<id>
 	def update_user(self, id):
-		return "Updated"
+		auth_user = auth_check()
+		if auth_user == None:
+			return jsonify({}), 401
+
+		if (int(auth_user["id"]) != int(id)):
+			return jsonify({}), 401
+
+		data = request.json
+
+		if "name" not in data or "last_name" not in data or "phone" not in data or "email" not in data:
+			return jsonify({"Errror": "Could not update user"}), 403
+
+
+		with Session(self.engine) as session:
+			statement = update(UserModel).where(UserModel.id == id).values(
+				name=data["name"],
+				last_name=data["last_name"],
+				email=data["email"],
+				phone=data["phone"]
+			)
+			rows = session.execute(statement)
+			if (rows == None):
+				return jsonify({"Errror": "Could not update user"}), 403
+			session.commit()
+			return jsonify({}), 200
+
+		return jsonify({"Errror": "Could not update user"}), 403
