@@ -15,7 +15,20 @@ class User:
 
 	# GET /user/<id>
 	def get_user(self, id):
-		return id
+		with Session(self.engine) as session:
+			statement = select(UserModel.id, UserModel.name, UserModel.last_name, UserModel.email, UserModel.phone, UserModel.creation_date).where(UserModel.id == id)
+			result = session.execute(statement).fetchone()
+			if result == None:
+				return jsonify({"error": "None user exists with the provided ID."}), 403
+			row = {
+				"id": result.id,
+				"name": result.name,
+				"last_name": result.last_name,
+				"email": result.email,
+				"phone": result.phone,
+				"creation_date": result.creation_date
+			}
+			return jsonify(row), 200
 
 	# POST /user/
 	def create_user(self):
