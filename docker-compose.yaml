@@ -1,7 +1,7 @@
 version: '3.0'
 services:
   database:
-    image: 'postgres:bullseye'
+    image: 'mariadb:10.3'
     container_name: database
     restart: always
     env_file:
@@ -9,7 +9,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - "database_volume:/var/lib/pgsql/data"
+      - "database_volume:/var/lib/mysql/"
   frontend:
     image: 'node:alpine3.16'
     container_name: frontend
@@ -22,7 +22,7 @@ services:
     ports:
       - 80:80
   backend:
-    image: 'nestjs/cli:286d7b9930ef05f7c32484b48b208233c5f44329'
+    image: 'python:3.9'
     container_name: backend
     tty: true
     restart: always
@@ -39,4 +39,4 @@ volumes:
         driver_opts:
             type: none
             o: bind
-            device: "/Users/${USER}/hackathon/data/postgres"
+            device: "/Users/${USER}/hackathon/data/mariadb"
