@@ -1,10 +1,10 @@
-import { React } from 'react';
+import React from 'react';
 
 import { CiLocationOn } from 'react-icons/ci';
 
 export const Offer = () => {
 	return (
-		<div className="card bg-white shadow-md my-4">
+		<div className="card bg-white shadow-md">
 			<div className="card-body">
 				<div className='inline-flex items-center justify-between'>
 					<h2 className="card-title text-2xl">Camarero</h2>

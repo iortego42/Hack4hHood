@@ -1,7 +1,10 @@
+import React from 'react';
+
 import { SearchBar } from '../components/SearchBar';
 import { Offer } from '../components/Offer';
 
 import { IoFilterSharp } from 'react-icons/io5';
+import { Link } from 'react-router-dom';
 
 export const Home = () => {
 	let array = [{}, {}, {}, {}];
@@ -17,11 +20,15 @@ export const Home = () => {
 					</ul>
 				</div>
 				<SearchBar />
-				<button className="btn btn-primary ml-2 text-md">Crear oferta</button>
+				<Link className="btn btn-primary ml-2 text-md" to={"/offer/create"}>Crear oferta</Link>
 			</div>
-			{array.map((e) => {
-				return <Offer />
-			})}
+			<div className='mt-4'>
+				{array.map((e) => {
+					return (
+						<div className='my-4'><Offer /></div>
+					)
+				})}
+			</div>
 		</div>
 	)
 };
