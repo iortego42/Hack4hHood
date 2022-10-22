@@ -25,9 +25,8 @@ class OfferModel(Base):
 	id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
 	title = Column(String(255))
 	description = Column(String(2048))
-	email = Column(String(255))
-	phone = Column(String(16))
 	creation_date = Column(DateTime, default=(datetime.utcnow()), index=True)
+	user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 	tag_id = Column(Integer, ForeignKey("tags.id"), nullable=False)
 	location_id = Column(Integer, ForeignKey("locations.id"), nullable=False)
 
@@ -45,10 +44,3 @@ class TagModel(Base):
 
 	id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
 	name = Column(String(255))
-
-class UsersOffersModel(Base):
-	__tablename__ = "users_offers"
-
-	id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
-	user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-	offer_id = Column(Integer, ForeignKey("offers.id"), nullable=False)

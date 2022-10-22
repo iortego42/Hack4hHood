@@ -10,6 +10,7 @@ from sqlalchemy import select
 from routes.user import User
 from routes.offer import Offer
 from routes.auth import Auth
+from routes.tag import Tag
 
 class Server:
 	def __init__(self) -> None:
@@ -20,9 +21,11 @@ class Server:
 		self.user_routes = User(self.engine)
 		self.offer_routes = Offer(self.engine)
 		self.auth_routes = Auth(self.engine)
+		self.tag_routes = Tag(self.engine)
 		self.define_user_routes()
 		self.define_offer_routes()
 		self.define_auth_routes()
+		self.define_tag_routes()
 
 	def define_auth_routes(self):
 		self.app.add_url_rule("/auth", view_func=self.auth_routes.auth, methods=["POST"])
@@ -38,6 +41,12 @@ class Server:
 		self.app.add_url_rule("/offer", view_func=self.offer_routes.create_offer, methods=["POST"])
 		self.app.add_url_rule("/offer/<id>", view_func=self.offer_routes.get_offer, methods=["GET"])
 		self.app.add_url_rule("/offer/<id>", view_func=self.offer_routes.update_offer, methods=["PATCH"])
+
+	def define_tag_routes(self):
+		self.app.add_url_rule("/tag", view_func=self.tag_routes.create_tag, methods=["POST"])
+		self.app.add_url_rule("/tag/<id>", view_func=self.tag_routes.get_tag, methods=["GET"])
+		self.app.add_url_rule("/tag", view_func=self.tag_routes.get_all_tags, methods=["GET"])
+		
 
 if __name__ == "__main__":
 	server: Server = Server()
