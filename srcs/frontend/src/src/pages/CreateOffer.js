@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
+import { useNavigate } from 'react-router-dom';
 import { CiLocationOn } from 'react-icons/ci';
+import { getTagsData, getTagColor } from '../utils/Tags';
 
 export const CreateOffer = () => {
 	let navigator = useNavigate();
@@ -16,6 +17,9 @@ export const CreateOffer = () => {
 	let [lastName, setLastName] = useState(null);
 	let [phone, setPhone] = useState(null);
 	let [email, setEmail] = useState(null);
+
+	let [tags, setTags] = useState([]);
+	let [selectedTag, setSelectedTag] = useState(null);
 
 	useEffect(() => {
 		const getData = async () => {
@@ -42,6 +46,7 @@ export const CreateOffer = () => {
 		};
 
 		getData();
+		getTagsData({setTags});
 	}, []);
 
 	return (
@@ -62,10 +67,11 @@ export const CreateOffer = () => {
 							<input type="text" placeholder="" value={location} onChange={(e) => {setLocation(e.target.value)}} className="input input-bordered w-full" />
 						</div>
 						<div className="dropdown dropdown-hover">
-							<label tabIndex={0} className="btn btn-outline mr-2 normal-case font-normal">Categoría</label>
+							<label tabIndex={0} className="btn btn-outline mr-2 normal-case font-normal">{tags && (selectedTag ? selectedTag : "Categoría")}</label>
 							<ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 gap-1">
-								<li><a>Trabajo</a></li>
-								<li><a className='bg-gray-200'>Comida</a></li>
+								{tags.length != 0 && tags.map((e) => {
+									return <li className={selectedTag === e.name ? 'bg-gray-200' : ''} onClick={(ev) => setSelectedTag(e.name)} key={e.id}><a>{e.name}</a></li>
+								})}
 							</ul>
 						</div>
 					</div>
@@ -84,7 +90,7 @@ export const CreateOffer = () => {
 				<div className="card-body">
 					<div className='inline-flex items-center justify-between'>
 						<h2 className="card-title text-2xl">{title}</h2>
-						<div className="badge badge-success p-4">Trabajo</div>
+						{tags.length != 0 && <div className="badge badge-success p-4" style={{backgroundColor: selectedTag ? `${getTagColor(selectedTag)}` : "asd"}}>{selectedTag ? selectedTag : "Categoría"}</div>}
 					</div>
 					<h3 className="text-gray-500 text-sm inline-flex items-center"><CiLocationOn className='mr-1'/>{location}</h3>
 					<p>{description}</p>

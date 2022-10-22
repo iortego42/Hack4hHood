@@ -14,21 +14,26 @@ export const Profile = () => {
 	let [activeTab, setActiveTab] = useState("offers");
 
 	const saveUser = async (e) => {
-		let response = await fetch(`http://10.13.1.4:3000/user/${JSON.parse(localStorage.getItem('user'))["id"]}`, {
-			method: 'PATCH',
-			headers: {
-				'Authorization': localStorage.getItem('token'),
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				name: name,
-				last_name: lastName,
-				phone: number,
-				email: email
-			}),
-		});
+		if (localStorage.getItem('user') !== null) {
+			let response = await fetch(`http://10.13.1.4:3000/user/${JSON.parse(localStorage.getItem('user'))["id"]}`, {
+				method: 'PATCH',
+				headers: {
+					'Authorization': localStorage.getItem('token'),
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					name: name,
+					last_name: lastName,
+					phone: number,
+					email: email
+				}),
+			});
 
-		if (response.status === 401 || response.status === 403) {
+			if (response.status === 401 || response.status === 403) {
+				navigator("/login");
+				return;
+			}
+		} else {
 			navigator("/login");
 			return;
 		}

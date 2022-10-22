@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { SearchBar } from '../components/SearchBar';
 import { Offer } from '../components/Offer';
@@ -6,8 +6,17 @@ import { Offer } from '../components/Offer';
 import { IoFilterSharp } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 
+import { getTagsData } from '../utils/Tags';
+
 export const Home = () => {
 	let array = [{}, {}, {}, {}];
+
+	let [tags, setTags] = useState([]);
+	let [selectedTag, setSelectedTag] = useState([]);
+
+	useEffect(() => {
+		getTagsData({ setTags });
+	}, []);
 
 	return (
 		<div className="w-3/4 m-auto">
@@ -15,8 +24,9 @@ export const Home = () => {
 				<div className="dropdown dropdown-hover">
 					<label tabIndex={0} className="btn mr-2"><IoFilterSharp/></label>
 					<ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 gap-1">
-						<li><a>Trabajo</a></li>
-						<li><a className='bg-gray-200'>Comida</a></li>
+						{tags.length != 0 && tags.map((e) => {
+							return <li className={selectedTag === e.name ? 'bg-gray-200' : ''} onClick={(ev) => setSelectedTag(e.name)} key={e.id}><a>{e.name}</a></li>
+						})}
 					</ul>
 				</div>
 				<SearchBar />

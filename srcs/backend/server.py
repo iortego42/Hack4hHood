@@ -11,6 +11,7 @@ from routes.user import User
 from routes.offer import Offer
 from routes.auth import Auth
 from routes.tag import Tag
+from routes.location import Location
 
 class Server:
 	def __init__(self) -> None:
@@ -22,10 +23,12 @@ class Server:
 		self.offer_routes = Offer(self.engine)
 		self.auth_routes = Auth(self.engine)
 		self.tag_routes = Tag(self.engine)
+		self.location_routes = Location(self.engine)
 		self.define_user_routes()
 		self.define_offer_routes()
 		self.define_auth_routes()
 		self.define_tag_routes()
+		self.define_location_routes()
 
 	def define_auth_routes(self):
 		self.app.add_url_rule("/auth", view_func=self.auth_routes.auth, methods=["POST"])
@@ -46,6 +49,11 @@ class Server:
 		self.app.add_url_rule("/tag", view_func=self.tag_routes.create_tag, methods=["POST"])
 		self.app.add_url_rule("/tag/<id>", view_func=self.tag_routes.get_tag, methods=["GET"])
 		self.app.add_url_rule("/tag", view_func=self.tag_routes.get_all_tags, methods=["GET"])
+
+	def define_location_routes(self):
+		self.app.add_url_rule("/location", view_func=self.location_routes.create_location, methods=["POST"])
+		self.app.add_url_rule("/location/<id>", view_func=self.location_routes.get_location, methods=["GET"])
+		self.app.add_url_rule("/location", view_func=self.location_routes.get_all_locations, methods=["GET"])
 		
 
 if __name__ == "__main__":
