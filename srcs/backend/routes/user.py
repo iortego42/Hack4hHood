@@ -50,9 +50,6 @@ class User:
 
 	# POST /user/
 	def create_user(self):
-		auth_user = auth_check()
-		if auth_user == None:
-			return jsonify({}), 401
 
 		data = request.json
 		user_obj = UserModel(
@@ -88,6 +85,8 @@ class User:
 		if "name" not in data or "last_name" not in data or "phone" not in data or "email" not in data:
 			return jsonify({"Errror": "Could not update user"}), 403
 
+		if len(data["phone"]) > 16:
+			return jsonify({"Errror": "Phone too long"}), 403
 
 		with Session(self.engine) as session:
 			statement = update(UserModel).where(UserModel.id == id).values(
