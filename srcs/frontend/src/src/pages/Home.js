@@ -7,15 +7,17 @@ import { IoFilterSharp } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 
 import { getTagsData } from '../utils/Tags';
+import { getOffers } from '../utils/Offers';
 
 export const Home = () => {
-	let array = [{}, {}, {}, {}];
+	let [offers, setOffers] = useState([]);
 
 	let [tags, setTags] = useState([]);
 	let [selectedTag, setSelectedTag] = useState([]);
 
 	useEffect(() => {
 		getTagsData({ setTags });
+		getOffers({ setOffers });
 	}, []);
 
 	return (
@@ -33,9 +35,9 @@ export const Home = () => {
 				{ localStorage.getItem('token') !== null && <Link className="btn btn-primary ml-2 text-md" to={"/offer/create"}>Crear oferta</Link>}
 			</div>
 			<div className='mt-4'>
-				{array.map((e) => {
+				{offers && offers.map((e) => {
 					return (
-						<div className='my-4'><Offer /></div>
+						<div className='my-4'><Offer data={e} /></div>
 					)
 				})}
 			</div>

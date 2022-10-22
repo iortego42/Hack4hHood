@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CiLocationOn } from 'react-icons/ci';
 import { getTagsData, getTagColor } from '../utils/Tags';
+import { createOffer } from '../utils/Offers';
 
 export const CreateOffer = () => {
 	let navigator = useNavigate();
@@ -49,6 +50,12 @@ export const CreateOffer = () => {
 		getTagsData({setTags});
 	}, []);
 
+	const submitForm = (e) => {
+		const status = createOffer(title, description, 1, JSON.parse(localStorage.getItem('user'))["id"], 1);
+
+		navigator("/");
+	};
+
 	return (
 		<div className="w-3/4 m-auto">
 			<div className="form-control mt-4">
@@ -76,7 +83,7 @@ export const CreateOffer = () => {
 						</div>
 					</div>
 					<div>
-						<button className='btn btn-outline btn-success'>CREAR</button>
+						<button className='btn btn-outline btn-success' onClick={submitForm}>CREAR</button>
 					</div>
 				</div>
 				<div>

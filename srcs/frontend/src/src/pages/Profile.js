@@ -31,11 +31,9 @@ export const Profile = () => {
 
 			if (response.status === 401 || response.status === 403) {
 				navigator("/login");
-				return;
 			}
 		} else {
 			navigator("/login");
-			return;
 		}
 	};
 
