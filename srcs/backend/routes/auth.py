@@ -13,7 +13,9 @@ class Auth:
 	def auth(self):
 		data = request.json
 
-		with Session(self.engine) as session:
+		if "email" not in data or "password" not in data:
+			return jsonify({}), 403
+		with Session(self.engine) as session:	
 			statement = select(UserModel.id).where(UserModel.email == data["email"], UserModel.password == data["password"])
 			row = session.execute(statement).fetchone()
 			if row == None:
@@ -21,3 +23,4 @@ class Auth:
 			row = dict(row)
 			token = jwt.encode(row, "secret", algorithm="HS256")
 			return jsonify({"token": token}), 200
+
